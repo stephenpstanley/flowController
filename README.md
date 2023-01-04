@@ -85,3 +85,7 @@
 **Run the component on the app page you just created**
 
 11. Click the app picker (9 dots), search for "controller" and open the page 
+
+
+##Demo Video
+https://salesforce.vidyard.com/watch/cHxQzmdtMjMtWwM5UhHcqQ?
