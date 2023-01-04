@@ -1,0 +1,78 @@
+<!--
+ - Created by stephen.stanley on 28/12/2022.
+ -->
+
+<aura:component controller="FlowManagerController" implements="flexipage:availableForAllPageTypes">
+
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+
+    <aura:attribute name="flows" type="Object"/>
+    <aura:attribute name="selectedFlows" type="List"/>
+    <aura:attribute name="columns" type="List" default="[
+                                                    {label: 'Developer Name', fieldName: 'DeveloperName', initialWidth: 500, type: 'text' },
+                                                    {label: 'Active', fieldName: 'Active', initialWidth: 150, type: 'boolean'},
+                                                    {label: 'Action', type: 'button', initialWidth: 200, typeAttributes:
+                                                    {label: 'Change Status', name: 'change_status' }},
+                                                    {label: 'Latest Version', fieldName: 'LatestVersionNumber', initialWidth: 150, type: 'number' },
+                                                    {label: 'Active Version', fieldName: 'ActiveVersionNumber', initialWidth: 150, type: 'number' },
+                                                    ]" />
+
+
+    <aura:attribute name="loading" type="Boolean" default="false"/>
+
+    <aura:if isTrue="{!v.loading}">
+        <lightning:spinner alternativeText="Loading" size="large" />
+    </aura:if>
+
+    <div class="slds-card slds-p-around_small">
+
+        <div class="slds-p-bottom_small">
+            <lightning:button
+                    label="Toggle selected Flows"
+                    variant="brand"
+                    onclick="{! c.handleToggleSelectedFlows }"
+            />
+
+            <lightning:button
+                    label="Enable All Flows"
+                    variant="brand"
+                    onclick="{! c.handleEnableAllFlows }"
+            />
+
+            <lightning:button
+                    label="Disable All Flows"
+                    variant="brand"
+                    onclick="{! c.handleDisableAllFlows }"
+            />
+
+            <lightning:button
+                    label="Save Flow State"
+                    variant="brand"
+                    onclick="{! c.handleSaveFlowState }"
+            />
+
+            <lightning:button
+                    label="Retrieve Flow State"
+                    variant="brand"
+                    onclick="{! c.handleRetrieveFlowState }"
+            />
+
+            <lightning:button
+                    label="Apply Displayed State"
+                    variant="brand"
+                    onclick="{! c.handleApplyFlowState }"
+            />
+
+
+        </div>
+
+        <lightning:datatable keyField="id"
+                             data="{! v.flows }"
+                             onrowaction="{! c.handleRowAction }"
+                             columns="{! v.columns }"
+                             onrowselection="{! c.handleRowSelection }"
+                             showRowNumberColumn="true" />
+
+    </div>
+
+</aura:component>
