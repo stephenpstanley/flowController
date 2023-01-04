@@ -1,18 +1,87 @@
-# Salesforce DX Project: Next Steps
+# Installation Instructions
 
-Now that you’ve created a Salesforce DX project, what’s next? Here are some documentation resources to get you started.
+##	In the target org
+**Create Connected App**
+1.	Setup > App Manager [New Connected App]
+  - Name: ApexMDAPI
+  - API Name: ApexMDAPI
+  - Contact Email: Your email
+  - Select Enable OAuth Settings
+  - Set callback URL = https://locahost/dummy
+  -	Choose the “full” and “refresh_token, offline_access” OAuth Scopes.
+  -	Save
+  -	Continue
+  
+**Copy the Consumer Key and Consumer Secret as follows:**
 
-## How Do You Plan to Deploy Your Changes?
+2. Setup > App Manager (you may already be on the page where you can go to straight to the second bullet)
+  - Click on action arrow for ApexMDAPI, select View
+  - Click on [Manage Consumer Details]
+  - Copy the verification code from your email into the dialog & Verify
+  - Copy Key and Secret for later use
+  
+**Create Auth. Provider**
 
-Do you want to deploy a set of changes, or create a self-contained application? Choose a [development model](https://developer.salesforce.com/tools/vscode/en/user-guide/development-models).
+3. Setup > Security Controls > Auth. Provider > [New]
+  - Type: Salesforce
+  - Name: ApexMDAPI
+  - URL Suffix: ApexMDAPI
+  - Paste in Consumer Key and Secret
+  - Enter Default Scopes: full refresh_token offline_access
+  - Save
+  - From the Salesforce Configuration section, copy the Callback URL value
+  
+**Set the connected App Callback URL value**
 
-## Configure Your Salesforce DX Project
+4.	Setup > App Manager
+  -	Click on action arrow for ApexMDAPI, select Edit  
+  - Paste the copied value into the Callback URL field
+  - Save.  
+  - **Wait a few minutes to allow the settings to take effect and propagate**
+  
+**Create the Named Credential**
 
-The `sfdx-project.json` file contains useful configuration information for your project. See [Salesforce DX Project Configuration](https://developer.salesforce.com/docs/atlas.en-us.sfdx_dev.meta/sfdx_dev/sfdx_dev_ws_config.htm) in the _Salesforce DX Developer Guide_ for details about this file.
+5.	Setup > Security Controls > Named Credentials [New Legacy] (not New)
+  - Label: ApexMDAPI
+  - Name: ApexMDAPI
+  - URL: The instance_Url for your target org (the URL up to but excluding the first single ‘/’ character). Ensure that the URL is in the form https://<instance_url>.my.salesforce.com
+  - Identity Type = Named Principal
+  - Authentication Protocol = OAuth 2.0
+  - Authentication Provider = ApexMDAPI (as previously created)
+  - Scope: full refresh_token offline_access
+  - Ensure “Start Authentication Flow on Save” is ticked
+  - Tick the Allow Merge Fields in HTTP Body” checkbox and select Save
+  - This will open a browser window. Log into your target org and ALLOW all requested scopes
+  - This should return you to the Named Credential page. It should now show an authentication status that shows the user it has been authenticated as. If you get an error such as invalid_client_id or callback_url_mismatch, wait a few minutes, find the Named Credential, Edit/Save and try again
 
-## Read All About It
+**Ensure that Notes have been enabled in the target org as this is where the manager stores the details of which flows are active**
 
-- [Salesforce Extensions Documentation](https://developer.salesforce.com/tools/vscode/)
-- [Salesforce CLI Setup Guide](https://developer.salesforce.com/docs/atlas.en-us.sfdx_setup.meta/sfdx_setup/sfdx_setup_intro.htm)
-- [Salesforce DX Developer Guide](https://developer.salesforce.com/docs/atlas.en-us.sfdx_dev.meta/sfdx_dev/sfdx_dev_intro.htm)
-- [Salesforce CLI Command Reference](https://developer.salesforce.com/docs/atlas.en-us.sfdx_cli_reference.meta/sfdx_cli_reference/cli_reference.htm)
+6.	Feature Settings > Sales > Notes Settings > Enable Notes
+
+**Deploy the following items from the sandbox to the target org**
+
+7.	Apex Classes:  
+  - FlowManagerController
+  - FlowManagerControllerTest
+  - FlowManagerControllerCalloutMockGet
+  - FlowManagerControllerCalloutMockPatch
+8.	Aura Component Bundle: 
+  - FlowManager
+9.	**When deploying Run specified tests: FlowManagerControllerTest**
+
+**Create a new Lightning Page in the target org**
+
+10. Setup > Lightning App Builder [New]
+  - App Page [Next]
+  - Label: The Flow Controller [Next]
+  - Select One Region [Finish]
+  - Add the Custom Component FlowManager to the top region
+  - Save, Activate 
+  - Activate for system administrators only
+  - Click LIGHTNING EXPERIENCE Tab
+  - Choose one or more Lightning Apps to add the page to and [Save] 
+  - [Save] again, click back in the builder to return to setup
+  
+**Run the component on the app page you just created**
+
+11. Click the app picker (9 dots), search for "controller" and open the page 
