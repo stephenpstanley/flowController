@@ -1,6 +1,8 @@
-# Installation Instructions
+# FlowController - An AURA Component and APEX Classes to enable/disable flows and process builder in bulk
 
-##	In the target org
+## Installation Instructions
+
+###	In the target org
 **Create Connected App**
 1.	Setup > App Manager [New Connected App]
   - Name: ApexMDAPI
