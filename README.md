@@ -47,6 +47,7 @@
   - Label: ApexMDAPI
   - Name: ApexMDAPI
   - URL: The instance_Url for your target org (the URL up to but excluding the first single ‘/’ character). Ensure that the URL is in the form https://<instance_url>.my.salesforce.com
+  - In Sandboxes, Enhanced Domains means that the format needs to be https://<instance_url>.sandbox.my.salesforce.com  From Winter'24 all sandboxes have Enhanced Domains enforced.  For example if your production domain is abcd and the sandbox name is xyz, then the URL has to be https://abcd--xyz.sandbox.my.salesforce.com/
   - Identity Type = Named Principal
   - Authentication Protocol = OAuth 2.0
   - Authentication Provider = ApexMDAPI (as previously created)
